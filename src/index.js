@@ -7,7 +7,20 @@ dotenv.config({
   path: "./env",
 });
 
-connectDb();
+connectDb()
+  .then(() => {
+    app.on("error", () => {
+      console.log("Error:", error);
+      throw error;
+    });
+
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is running at Port: ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error while connecting to database: ", err);
+  });
 
 // import express from "express";
 
